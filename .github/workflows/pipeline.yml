@@ -22,10 +22,10 @@ jobs:
       matrix:
         # Define a list of your services, their corresponding ECR repo names, and Dockerfile paths
         include:
-          - service_name: web-app
+          - service_name: frontend
             repo_name: my-web-app-repo
             context_dir: ./frontend
-          - service_name: api-service
+          - service_name: backend
             repo_name: my-api-repo
             context_dir: ./backend
 
@@ -53,10 +53,35 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
+          # 1. Build and push Image A (e.g., frontend)
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest -f ./frontend/Dockerfile ./frontend
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG -f ./frontend/Dockerfile ./frontend
+          
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG
+          
+          # 2. Build and push Image B (e.g., backend)
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest -f ./backend/Dockerfile ./backend
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG -f ./backend/Dockerfile ./backend
+          
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
+
+
           # Build the container using the matrix directory context
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ${{ matrix.context_dir }}
-          #docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+          #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest -f ./frontend/Dockerfile ./frontend
+          #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG -f ./frontend/Dockerfile ./frontend
+          
+          #docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
+          #docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG
+
+          ###
+
+
+          #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ${{ matrix.context_dir }}
+          ##docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
         
           # Push both the SHA tag and the latest tag to ECR
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          #docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          #docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
