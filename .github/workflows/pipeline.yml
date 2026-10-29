@@ -85,3 +85,18 @@ jobs:
           # Push both the SHA tag and the latest tag to ECR
           #docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           #docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+
+      - name: Setup SSH over SSM
+        uses: ankurk91/setup-ssh-over-ssm-action@v1
+        with:
+          instance-id: i-0d95f6af1ed2a3f6a
+          os-user: ubuntu                 # User matching your OS (ubuntu or ec2-user)
+
+      - name: Execute Remote SSH Commands
+        run: |
+          ssh ssm-target '
+            echo "Successfully connected!"
+            uname -a
+            docker ps -a
+          '
