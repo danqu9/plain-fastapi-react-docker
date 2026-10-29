@@ -95,8 +95,6 @@ jobs:
 
       - name: Execute Remote SSH Commands
         run: |
-          ssh ssm-target '
             echo "Successfully connected!"
             uname -a
             docker ps -a
-          '
