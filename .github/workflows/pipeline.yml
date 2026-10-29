@@ -55,17 +55,17 @@ jobs:
         run: |
           # 1. Build and push Image A (e.g., frontend)
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest -f ./frontend/Dockerfile ./frontend
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG -f ./frontend/Dockerfile ./frontend
+          #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG -f ./frontend/Dockerfile ./frontend
           
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG
+          #docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG
           
           # 2. Build and push Image B (e.g., backend)
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest -f ./backend/Dockerfile ./backend
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG -f ./backend/Dockerfile ./backend
+          #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG -f ./backend/Dockerfile ./backend
           
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
+          #docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
 
 
           # Build the container using the matrix directory context
