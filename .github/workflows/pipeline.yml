@@ -55,7 +55,7 @@ jobs:
         run: |
           # Build the container using the matrix directory context
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ${{ matrix.context_dir }}
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          #docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
         
           # Push both the SHA tag and the latest tag to ECR
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
