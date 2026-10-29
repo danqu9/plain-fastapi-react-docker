@@ -23,9 +23,11 @@ jobs:
         # Define a list of your services, their corresponding ECR repo names, and Dockerfile paths
         include:
           - service_name: frontend
+            tag: frontend-latest
             repo_name: my-web-app-repo
             context_dir: ./frontend
           - service_name: backend
+            tag: backend-latest
             repo_name: my-api-repo
             context_dir: ./backend
 
@@ -54,17 +56,18 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # 1. Build and push Image A (e.g., frontend)
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest -f ./frontend/Dockerfile ./frontend
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ matrix.tag }} ${{ matrix.context_dir }}
+          # -f ./frontend/Dockerfile ./frontend
           #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG -f ./frontend/Dockerfile ./frontend
           
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ matrix.tag }}
           #docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG
           
           # 2. Build and push Image B (e.g., backend)
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest -f ./backend/Dockerfile ./backend
+          #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest -f ./backend/Dockerfile ./backend
           #docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG -f ./backend/Dockerfile ./backend
           
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
+          #docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-latest
           #docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
 
 
