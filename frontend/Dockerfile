@@ -11,9 +11,11 @@ RUN npm install
 # Bundle app source including the public and src directories
 COPY ./public /app/public
 COPY ./src /app/src
+RUN npm run build
 
 # Make port 3000 available to the world outside this container
 EXPOSE 3000
 
 # Run npm start when the container launches
+#CMD ["npm", "run", "build"]
 CMD ["npm", "start"]
