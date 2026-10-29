@@ -11,7 +11,7 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
-  AWS_ROLE_ARN: arn:aws:iam::123456789012:role/github-ecr-oidc-role
+  AWS_ROLE_ARN: arn:aws:iam::007927305675:role/github-ecr-oidc-role
   ECR_REPOSITORY: your-ecr-repo-name
 
 jobs:
