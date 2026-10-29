@@ -18,6 +18,16 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Define a list of your services, their corresponding ECR repo names, and Dockerfile paths
+        include:
+          - service_name: web-app
+            repo_name: my-web-app-repo
+            context_dir: ./frontend
+          - service_name: api-service
+            repo_name: my-api-repo
+            context_dir: ./backend
 
     steps:
       # 1. Check out the repository code
@@ -43,6 +53,10 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          # Build the container using the matrix directory context
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ${{ matrix.context_dir }}
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        
+          # Push both the SHA tag and the latest tag to ECR
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
