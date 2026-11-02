@@ -14,6 +14,7 @@ env:
   AWS_REGION: us-east-1
   AWS_ROLE_ARN: arn:aws:iam::007927305675:role/github-ecr-oidc-role
   ECR_REPOSITORY: chigwell/plain-fastapi-react-docker
+  ECS_CLUSTER_NAME: my-dynamic-cluster
 
 jobs:
   build-and-push:
@@ -102,9 +103,27 @@ jobs:
       #      uname -a
       #      docker ps -a
       #
-      - name: Deploy ECS Cluster and Network
-        uses: bitovi/github-actions-deploy-ecs@v1
+  provision-cluster:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws_resource_identifier: my-app-prod
-          #ecs_cluster_name: my-production-cluster
-          # This action handles underlying VPC/ALB generation behind the scenes 
+          # Best Practice: Use OpenID Connect (OIDC) Role instead of long-lived keys
+          role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create ECS Cluster
+        run: |
+          echo "Checking if ECS cluster ${{ env.ECS_CLUSTER_NAME }} already exists..."
+          CLUSTER_EXISTS=$(aws ecs list-clusters --query "clusterArns[?contains(@, '${{ env.ECS_CLUSTER_NAME }}')]" --output text)
+          
+          if [ -z "$CLUSTER_EXISTS" ]; then
+            echo "Cluster not found. Creating ECS cluster..."
+            aws ecs create-cluster --cluster-name ${{ env.ECS_CLUSTER_NAME }}
+          else
+            echo "ECS cluster ${{ env.ECS_CLUSTER_NAME }} already exists. Skipping creation."
+          fi
