@@ -96,8 +96,15 @@ jobs:
           instance-id: i-0d95f6af1ed2a3f6a
           #os-user: ubuntu                 # User matching your OS (ubuntu or ec2-user)
 
-      - name: Execute Remote SSH Commands
-        run: |
-            echo "Successfully connected!"
-            uname -a
-            docker ps -a
+      #- name: Execute Remote SSH Commands
+      #  run: |
+      #      echo "Successfully connected!"
+      #      uname -a
+      #      docker ps -a
+      #
+      - name: Deploy ECS Cluster and Network
+        uses: bitovi/github-actions-deploy-ecs@v1
+        with:
+          aws_resource_identifier: my-app-prod
+          ecs_cluster_name: my-production-cluster
+          # This action handles underlying VPC/ALB generation behind the scenes 
