@@ -137,8 +137,8 @@ jobs:
           # Required inputs
           service-name: test-service
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:frontend-latest
-          execution-role-arn: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole
-          infrastructure-role-arn: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/ecsInfrastructureRoleForExpressServices
+          execution-role-arn: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:service-role/ecsTaskExecutionRole
+          infrastructure-role-arn: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:service-role/ecsInfrastructureRoleForExpressServices
           
           # Container configuration
           container-port: 3000
