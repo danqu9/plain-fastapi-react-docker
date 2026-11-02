@@ -113,7 +113,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           # Best Practice: Use OpenID Connect (OIDC) Role instead of long-lived keys
-          role-to-assume: ${{ AWS_ROLE_ARN }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Create ECS Cluster
