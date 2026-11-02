@@ -106,5 +106,5 @@ jobs:
         uses: bitovi/github-actions-deploy-ecs@v1
         with:
           aws_resource_identifier: my-app-prod
-          ecs_cluster_name: my-production-cluster
+          #ecs_cluster_name: my-production-cluster
           # This action handles underlying VPC/ALB generation behind the scenes 
