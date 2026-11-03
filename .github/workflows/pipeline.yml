@@ -137,8 +137,11 @@ jobs:
           # Required inputs
           service-name: test-service
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:frontend-latest
-          execution-role-arn: arn:aws:iam::007927305675:service-role/ecsTaskExecutionRole
-          infrastructure-role-arn: arn:aws:iam::007927305675:service-role/ecsInfrastructureRoleForExpressServices
+          execution-role-arn: arn:aws:iam::007927305675:role/ecstaskexec
+          #arn:aws:iam::007927305675:service-role/ecsTaskExecutionRole
+          infrastructure-role-arn: arn:aws:iam::007927305675:role/ecsexpress
+          # arn:aws:iam::007927305675:service-role/ecsInfrastructureRoleForExpressServices
+          #infrastructure-role-arn: arn:aws:iam::007927305675:service-role/ecsInfrastructureRoleForExpressServices
 
           
           # Container configuration
@@ -146,4 +149,4 @@ jobs:
 
           # Resource configuration
           task-role-arn: arn:aws:iam::007927305675:service-role/ecsTaskExecutionRole
-          cluster: ${{ env.ECS_CLUSTER_NAME }}
+          #cluster: ${{ env.ECS_CLUSTER_NAME }}
