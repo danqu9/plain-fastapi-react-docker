@@ -148,5 +148,5 @@ jobs:
           container-port: 3000
 
           # Resource configuration
-          task-role-arn: arn:aws:iam::007927305675:service-role/ecsTaskExecutionRole
+          #task-role-arn: arn:aws:iam::007927305675:service-role/ecsTaskExecutionRole
           #cluster: ${{ env.ECS_CLUSTER_NAME }}
