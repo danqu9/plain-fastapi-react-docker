@@ -138,10 +138,10 @@ jobs:
           service-name: test-service
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:frontend-latest
           #execution-role-arn: arn:aws:iam::007927305675:role/ecstaskexec
-          execution-role-arn: arn:aws:iam::007927305675:service-role/ecsTaskExecutionRole
+          execution-role-arn:  arn:aws:iam::007927305675:role/github-ecr-oidc-role
           #infrastructure-role-arn: arn:aws:iam::007927305675:role/ecsexpress
           # arn:aws:iam::007927305675:service-role/ecsInfrastructureRoleForExpressServices
-          infrastructure-role-arn: arn:aws:iam::007927305675:service-role/AmazonECSInfrastructureRoleforExpressGatewayServices
+          infrastructure-role-arn: arn:aws:iam::007927305675:role/github-ecr-oidc-role
 
           
           # Container configuration
